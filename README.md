@@ -6,5 +6,5 @@ This project accompanies a [tutorial]() on building a conversational UI in React
 
 1. Clone and set up the [token server](https://github.com/pmbanugo/stream-chat-boilerplate-api) by following the instruction on that repo.
 
-2. Close this repo and run `npm install`.
+2. Clone this repo and run `npm install`.
 3. Run `npm start` to start the React app.

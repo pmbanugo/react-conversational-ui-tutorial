@@ -61,7 +61,6 @@ class App extends React.Component {
 
       this.initialiseChatClient();
     } else {
-      //TODO: Send message across the channel
       this.conversation.sendMessage({ text: message.text });
     }
   };
