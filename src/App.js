@@ -75,7 +75,54 @@ class App extends React.Component {
     this.setState({
       messages: [...this.state.messages, message]
     });
+
+    if (message.author.id !== this.user.id) this.createNotification(message);
   };
+
+  createNotification(message) {
+    return new Notification(`${message.author.name} sent a message`, {
+      body: message.text
+    });
+  }
+
+  componentDidMount() {
+    this.askNotificationPermission();
+  }
+
+  askNotificationPermission = async () => {
+    // Let's check if the browser supports notifications
+    if ("Notification" in window) {
+      if (this.checkNotificationPromise()) {
+        const permission = await Notification.requestPermission();
+        this.handlePermission(permission);
+      } else {
+        Notification.requestPermission(permission => {
+          this.handlePermission(permission);
+        });
+      }
+    } else {
+      console.log("This browser does not support notifications.");
+    }
+  };
+
+  handlePermission = permission => {
+    // Whatever the user answers, we make sure Chrome stores the information. This is because some old versions of chrome didn't set this automatically
+    if (!("permission" in Notification)) {
+      Notification.permission = permission;
+    }
+  };
+
+  // Function to check whether browser supports the promise version of requestPermission()
+  // Safari only supports the old callback-based version
+  checkNotificationPromise() {
+    try {
+      Notification.requestPermission().then();
+    } catch (e) {
+      return false;
+    }
+
+    return true;
+  }
 
   render() {
     return (
